@@ -1,28 +1,35 @@
-import { Power } from "lucide-react";
-import type { ConnectionStatus } from "@/types/miniapp";
-
-type ConnectionCardProps = {
-  status: ConnectionStatus;
-  onToggleStatus: () => void;
+type KeyCardProps = {
+  proxyUrl: string;
+  onSetupInTelegram: () => void;
+  onCopyLink: () => void;
 };
 
-export function ConnectionCard({ status, onToggleStatus }: ConnectionCardProps) {
-  const isConnected = status === "SECURE";
+function obfuscateLink(url: string) {
+  if (url.length < 24) return url;
+  return `${url.slice(0, 24)}...${url.slice(-10)}`;
+}
 
+export function KeyCard({ proxyUrl, onSetupInTelegram, onCopyLink }: KeyCardProps) {
   return (
-    <section className="relative flex flex-1 flex-col items-center justify-center gap-6 overflow-hidden rounded-2xl border border-border bg-surface p-6">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.12)_0%,_rgba(0,0,0,0)_60%)]" />
-      <p className="text-xs font-bold tracking-[0.2em] text-fg/85">
-        {isConnected ? "PROXY ACTIVE" : "PROXY OFFLINE"}
-      </p>
-      <button
-        type="button"
-        onClick={onToggleStatus}
-        className="inline-flex h-40 w-40 items-center justify-center rounded-full border border-border bg-fg text-bg"
-      >
-        <Power size={44} strokeWidth={2} />
-      </button>
-      <p className="text-sm text-fg/70">{isConnected ? "Traffic routed through secure proxy node" : "Tap to route traffic via proxy"}</p>
+    <section className="rounded-[12px] border border-border bg-surface p-4">
+      <p className="mb-2 text-xs uppercase tracking-[0.12em] text-fg/70">Active Proxy Key</p>
+      <p className="rounded-[8px] border border-border bg-bg px-3 py-3 text-sm">{obfuscateLink(proxyUrl)}</p>
+      <div className="mt-3 grid grid-cols-2 gap-2">
+        <button
+          type="button"
+          onClick={onSetupInTelegram}
+          className="h-10 rounded-[8px] border border-fg bg-fg px-3 text-sm font-semibold text-bg active:opacity-70"
+        >
+          Setup in Telegram
+        </button>
+        <button
+          type="button"
+          onClick={onCopyLink}
+          className="h-10 rounded-[8px] border border-fg bg-transparent px-3 text-sm font-semibold text-fg active:opacity-70"
+        >
+          Copy Link
+        </button>
+      </div>
     </section>
   );
 }

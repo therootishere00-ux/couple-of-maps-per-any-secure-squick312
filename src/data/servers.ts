@@ -1,8 +1,8 @@
 import type { Server } from "@/types/miniapp";
 
 export const SERVERS: Server[] = [
-  { id: "de", country: "Germany", signalLevel: 3 },
-  { id: "nl", country: "Netherlands", signalLevel: 3 },
-  { id: "fi", country: "Finland", signalLevel: 2 },
-  { id: "pl", country: "Poland", signalLevel: 2 },
+  { id: "de", flag: "🇩🇪", country: "Germany", city: "Frankfurt", pingMs: 42 },
+  { id: "nl", flag: "🇳🇱", country: "Netherlands", city: "Amsterdam", pingMs: 46 },
+  { id: "us", flag: "🇺🇸", country: "United States", city: "New York", pingMs: 78 },
+  { id: "gb", flag: "🇬🇧", country: "United Kingdom", city: "London", pingMs: 51 },
 ];

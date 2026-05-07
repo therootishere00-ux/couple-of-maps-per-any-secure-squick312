@@ -6,7 +6,7 @@ type ProfileChipProps = {
 
 export function ProfileChip({ displayName, username, avatarUrl }: ProfileChipProps) {
   return (
-    <section className="flex items-center gap-3 rounded-xl border border-border bg-surface px-3 py-2">
+    <section className="flex items-center gap-3 rounded-[12px] border border-border bg-surface px-3 py-2">
       {avatarUrl ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img src={avatarUrl} alt={displayName} className="h-10 w-10 rounded-full border border-border" />

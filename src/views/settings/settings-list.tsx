@@ -1,11 +1,12 @@
 type SettingsListProps = {
   activeServer: string;
+  userId: string;
   onOpenServers: () => void;
 };
 
-export function SettingsList({ activeServer, onOpenServers }: SettingsListProps) {
+export function SettingsList({ activeServer, userId, onOpenServers }: SettingsListProps) {
   return (
-    <section className="overflow-hidden rounded-xl border border-border bg-surface">
+    <section className="overflow-hidden rounded-[12px] border border-border bg-surface">
       <button
         type="button"
         onClick={onOpenServers}
@@ -18,8 +19,10 @@ export function SettingsList({ activeServer, onOpenServers }: SettingsListProps)
         <span className="text-sm font-medium">Protocol</span>
         <span className="text-sm text-fg/70">MTProto</span>
       </div>
-      <div className="border-b border-border px-4 py-4 text-sm font-medium">Proxy Credentials</div>
-      <div className="px-4 py-4 text-sm font-medium">Account ID</div>
+      <div className="flex items-center justify-between px-4 py-4">
+        <span className="text-sm font-medium">User ID</span>
+        <span className="text-sm text-fg/70">{userId}</span>
+      </div>
     </section>
   );
 }

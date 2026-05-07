@@ -1,8 +1,9 @@
 export type View = "dashboard" | "settings" | "servers";
-export type ConnectionStatus = "DISCONNECTED" | "SECURE";
 
 export type Server = {
   id: string;
+  flag: string;
   country: string;
-  signalLevel: 1 | 2 | 3;
+  city: string;
+  pingMs: number;
 };

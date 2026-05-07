@@ -1,11 +1,14 @@
-import { ConnectionCard } from "./connection-card";
+import { KeyCard } from "./connection-card";
 import { StatsSubscription } from "./stats-subscription";
-import type { ConnectionStatus } from "@/types/miniapp";
 import { ProfileChip } from "@/components/profile-chip";
 
 type DashboardViewProps = {
-  status: ConnectionStatus;
-  onToggleStatus: () => void;
+  proxyUrl: string;
+  serverLabel: string;
+  pingMs: number;
+  onSetupInTelegram: () => void;
+  onCopyLink: () => void;
+  onRegenerateKey: () => void;
   profile: {
     displayName: string;
     username: string;
@@ -13,7 +16,15 @@ type DashboardViewProps = {
   };
 };
 
-export function DashboardView({ status, onToggleStatus, profile }: DashboardViewProps) {
+export function DashboardView({
+  proxyUrl,
+  serverLabel,
+  pingMs,
+  onSetupInTelegram,
+  onCopyLink,
+  onRegenerateKey,
+  profile,
+}: DashboardViewProps) {
   return (
     <>
       <ProfileChip
@@ -21,8 +32,16 @@ export function DashboardView({ status, onToggleStatus, profile }: DashboardView
         username={profile.username}
         avatarUrl={profile.avatarUrl}
       />
-      <ConnectionCard status={status} onToggleStatus={onToggleStatus} />
-      <StatsSubscription />
+      <KeyCard
+        proxyUrl={proxyUrl}
+        onSetupInTelegram={onSetupInTelegram}
+        onCopyLink={onCopyLink}
+      />
+      <StatsSubscription
+        serverLabel={serverLabel}
+        pingMs={pingMs}
+        onRegenerateKey={onRegenerateKey}
+      />
     </>
   );
 }
