@@ -1,20 +1,25 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { AppHeader } from "@/components/app-header";
 import { SERVERS } from "@/data/servers";
 import { useTelegramWebApp } from "@/lib/telegram/use-telegram-webapp";
+import { useTelegramUser } from "@/lib/telegram/use-telegram-user";
 import type { ConnectionStatus, View } from "@/types/miniapp";
 import { DashboardView } from "@/views/dashboard";
 import { ServersView } from "@/views/servers";
 import { SettingsView } from "@/views/settings";
 
 export default function Page() {
-  useTelegramWebApp();
-
   const [view, setView] = useState<View>("dashboard");
   const [status, setStatus] = useState<ConnectionStatus>("DISCONNECTED");
   const [activeServerId, setActiveServerId] = useState("de");
+  const profile = useTelegramUser();
+  const handleBack = useCallback(() => {
+    setView((current) => (current === "servers" ? "settings" : "dashboard"));
+  }, []);
+  useTelegramWebApp({ view, onBack: handleBack });
+
   const activeServer = useMemo(
     () => SERVERS.find((item) => item.id === activeServerId)?.country ?? "Germany",
     [activeServerId],
@@ -25,14 +30,13 @@ export default function Page() {
       <AppHeader
         view={view}
         onOpenSettings={() => setView("settings")}
-        onBack={() => setView(view === "servers" ? "settings" : "dashboard")}
-        onClose={() => setView("dashboard")}
       />
 
       <div className="flex min-h-0 flex-1 flex-col gap-4 p-4">
         {view === "dashboard" ? (
           <DashboardView
             status={status}
+            profile={profile}
             onToggleStatus={() =>
               setStatus((current) => (current === "DISCONNECTED" ? "SECURE" : "DISCONNECTED"))
             }
