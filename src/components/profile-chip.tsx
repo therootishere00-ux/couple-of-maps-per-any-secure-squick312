@@ -16,8 +16,8 @@ export function ProfileChip({ displayName, username, avatarUrl }: ProfileChipPro
         </div>
       )}
       <div className="min-w-0">
-        <p className="truncate text-sm font-semibold">{displayName}</p>
-        <p className="truncate text-xs text-fg/70">{username}</p>
+        <p className="truncate text-xs text-fg/70">{displayName}</p>
+        <p className="truncate text-sm font-semibold">{username}</p>
       </div>
     </section>
   );

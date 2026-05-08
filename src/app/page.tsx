@@ -20,11 +20,14 @@ export default function Page() {
   const [activeServerId, setActiveServerId] = useState("de");
   const [proxyUrl, setProxyUrl] = useState(() => createProxyUrl("de"));
   const profile = useTelegramUser();
+  const handleOpenSettings = useCallback(() => {
+    setView("settings");
+  }, []);
 
   const handleBack = useCallback(() => {
     setView((current) => (current === "servers" ? "settings" : "dashboard"));
   }, []);
-  useTelegramWebApp({ view, onBack: handleBack });
+  useTelegramWebApp({ view, onBack: handleBack, onOpenSettings: handleOpenSettings });
 
   const activeServer = useMemo(() => SERVERS.find((item) => item.id === activeServerId) ?? SERVERS[0], [activeServerId]);
 
@@ -42,13 +45,9 @@ export default function Page() {
 
   return (
     <main className="mx-auto flex h-[100dvh] w-full max-w-md flex-col overflow-hidden bg-bg">
-      <AppHeader
-        view={view}
-        onOpenSettings={() => setView("settings")}
-        onBack={handleBack}
-      />
+      <AppHeader />
 
-      <div className="flex min-h-0 flex-1 flex-col gap-4 p-4">
+      <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-hidden p-4">
         {view === "dashboard" ? (
           <DashboardView
             proxyUrl={proxyUrl}

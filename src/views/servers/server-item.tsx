@@ -23,7 +23,7 @@ export function ServerItem({ server, isActive, onSelect }: ServerItemProps) {
         </div>
       </div>
       <div className="text-sm text-fg/80">
-        <p>{server.pingMs}ms</p>
+        <p>{server.pingMs} мс</p>
       </div>
     </button>
   );

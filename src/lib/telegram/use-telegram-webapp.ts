@@ -6,9 +6,10 @@ import type { View } from "@/types/miniapp";
 type UseTelegramWebAppProps = {
   view: View;
   onBack: () => void;
+  onOpenSettings: () => void;
 };
 
-export function useTelegramWebApp({ view, onBack }: UseTelegramWebAppProps) {
+export function useTelegramWebApp({ view, onBack, onOpenSettings }: UseTelegramWebAppProps) {
   useEffect(() => {
     if (typeof window === "undefined") return;
     const webApp = window.Telegram?.WebApp;
@@ -19,7 +20,16 @@ export function useTelegramWebApp({ view, onBack }: UseTelegramWebAppProps) {
     webApp.disableVerticalSwipes?.();
     webApp.setHeaderColor?.("#000000");
     webApp.setBackgroundColor?.("#000000");
-  }, []);
+
+    const handleSettingsClick = () => onOpenSettings();
+    webApp.SettingsButton?.show();
+    webApp.onEvent?.("settingsButtonClicked", handleSettingsClick);
+
+    return () => {
+      webApp.offEvent?.("settingsButtonClicked", handleSettingsClick);
+      webApp.SettingsButton?.hide();
+    };
+  }, [onOpenSettings]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;

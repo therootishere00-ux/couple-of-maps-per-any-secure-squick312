@@ -5,6 +5,12 @@ export type TelegramWebApp = {
   disableVerticalSwipes?: () => void;
   setHeaderColor?: (color: string) => void;
   setBackgroundColor?: (color: string) => void;
+  onEvent?: (event: "settingsButtonClicked", cb: () => void) => void;
+  offEvent?: (event: "settingsButtonClicked", cb: () => void) => void;
+  SettingsButton?: {
+    show: () => void;
+    hide: () => void;
+  };
   BackButton?: {
     show: () => void;
     hide: () => void;
