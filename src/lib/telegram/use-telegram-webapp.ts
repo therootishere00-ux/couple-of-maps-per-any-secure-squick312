@@ -1,15 +1,12 @@
 "use client";
 
 import { useEffect } from "react";
-import type { View } from "@/types/miniapp";
 
 type UseTelegramWebAppProps = {
-  view: View;
-  onBack: () => void;
   onOpenSettings: () => void;
 };
 
-export function useTelegramWebApp({ view, onBack, onOpenSettings }: UseTelegramWebAppProps) {
+export function useTelegramWebApp({ onOpenSettings }: UseTelegramWebAppProps) {
   useEffect(() => {
     if (typeof window === "undefined") return;
     const webApp = window.Telegram?.WebApp;
@@ -30,24 +27,4 @@ export function useTelegramWebApp({ view, onBack, onOpenSettings }: UseTelegramW
       webApp.SettingsButton?.hide();
     };
   }, [onOpenSettings]);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const webApp = window.Telegram?.WebApp;
-    const backButton = webApp?.BackButton;
-    if (!backButton) return;
-
-    if (view === "dashboard") {
-      backButton.hide();
-      return;
-    }
-
-    backButton.show();
-    backButton.onClick(onBack);
-
-    return () => {
-      backButton.offClick(onBack);
-      backButton.hide();
-    };
-  }, [onBack, view]);
 }
