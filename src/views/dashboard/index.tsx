@@ -4,8 +4,12 @@ import { ProfileChip } from "@/components/profile-chip";
 
 type DashboardViewProps = {
   proxyUrl: string;
+  isKeyVisible: boolean;
+  isCopied: boolean;
+  isKeyRegenerated: boolean;
   serverLabel: string;
   pingMs: number;
+  onToggleKeyVisibility: () => void;
   onSetupInTelegram: () => void;
   onCopyLink: () => void;
   onRegenerateKey: () => void;
@@ -18,8 +22,12 @@ type DashboardViewProps = {
 
 export function DashboardView({
   proxyUrl,
+  isKeyVisible,
+  isCopied,
+  isKeyRegenerated,
   serverLabel,
   pingMs,
+  onToggleKeyVisibility,
   onSetupInTelegram,
   onCopyLink,
   onRegenerateKey,
@@ -34,6 +42,9 @@ export function DashboardView({
       />
       <KeyCard
         proxyUrl={proxyUrl}
+        isKeyVisible={isKeyVisible}
+        isCopied={isCopied}
+        onToggleKeyVisibility={onToggleKeyVisibility}
         onSetupInTelegram={onSetupInTelegram}
         onCopyLink={onCopyLink}
       />
@@ -41,6 +52,7 @@ export function DashboardView({
         serverLabel={serverLabel}
         pingMs={pingMs}
         onRegenerateKey={onRegenerateKey}
+        isKeyRegenerated={isKeyRegenerated}
       />
     </>
   );

@@ -4,9 +4,15 @@ type StatsSubscriptionProps = {
   serverLabel: string;
   pingMs: number;
   onRegenerateKey: () => void;
+  isKeyRegenerated: boolean;
 };
 
-export function StatsSubscription({ serverLabel, pingMs, onRegenerateKey }: StatsSubscriptionProps) {
+export function StatsSubscription({
+  serverLabel,
+  pingMs,
+  onRegenerateKey,
+  isKeyRegenerated,
+}: StatsSubscriptionProps) {
   return (
     <>
       <section className="grid grid-cols-2 gap-3">
@@ -23,16 +29,20 @@ export function StatsSubscription({ serverLabel, pingMs, onRegenerateKey }: Stat
         </article>
       </section>
 
-      <button
-        type="button"
-        onClick={onRegenerateKey}
-        className="h-11 w-full rounded-[12px] border border-fg bg-transparent px-4 text-sm font-semibold text-fg active:opacity-70"
-      >
-        Регенерировать ключ
-      </button>
-
-      <section className="rounded-[12px] border border-border bg-surface px-4 py-3">
-        <p className="text-sm text-fg/85">Подписка активна: еще 24 дня</p>
+      <section className="rounded-[12px] border border-border bg-surface p-3">
+        <button
+          type="button"
+          onClick={onRegenerateKey}
+          className="h-10 w-full rounded-[8px] border border-fg bg-transparent px-4 text-sm font-semibold text-fg active:opacity-70"
+        >
+          Регенерировать ключ
+        </button>
+        <p className={`mt-2 text-xs ${isKeyRegenerated ? "text-fg" : "text-fg/55"}`}>
+          {isKeyRegenerated ? "Ключ обновлен!" : "Нажмите для генерации нового ключа."}
+        </p>
+        <div className="mt-2 border-t border-border pt-2">
+          <p className="text-sm text-fg/85">Подписка активна: еще 24 дня</p>
+        </div>
       </section>
     </>
   );

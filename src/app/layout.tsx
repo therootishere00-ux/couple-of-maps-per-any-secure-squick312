@@ -4,8 +4,8 @@ import type { Viewport } from "next";
 import Script from "next/script";
 
 export const metadata: Metadata = {
-  title: "Compass Proxy",
-  description: "Telegram Mini App UI",
+  title: "Компас Proxy",
+  description: "MTProto менеджер ключей для Telegram",
 };
 
 export const viewport: Viewport = {

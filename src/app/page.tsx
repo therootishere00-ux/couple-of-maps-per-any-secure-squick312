@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { AppHeader } from "@/components/app-header";
 import { SERVERS } from "@/data/servers";
 import { useTelegramWebApp } from "@/lib/telegram/use-telegram-webapp";
@@ -19,6 +19,9 @@ export default function Page() {
   const [view, setView] = useState<View>("dashboard");
   const [activeServerId, setActiveServerId] = useState("de");
   const [proxyUrl, setProxyUrl] = useState(() => createProxyUrl("de"));
+  const [isKeyVisible, setIsKeyVisible] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
+  const [isKeyRegenerated, setIsKeyRegenerated] = useState(false);
   const profile = useTelegramUser();
   const handleOpenSettings = useCallback(() => {
     setView("settings");
@@ -37,11 +40,25 @@ export default function Page() {
 
   const handleCopyLink = useCallback(async () => {
     await navigator.clipboard.writeText(proxyUrl);
+    setIsCopied(true);
   }, [proxyUrl]);
 
   const handleRegenerateKey = useCallback(() => {
     setProxyUrl(createProxyUrl(activeServerId));
+    setIsKeyRegenerated(true);
   }, [activeServerId]);
+
+  useEffect(() => {
+    if (!isCopied) return;
+    const timeoutId = window.setTimeout(() => setIsCopied(false), 900);
+    return () => window.clearTimeout(timeoutId);
+  }, [isCopied]);
+
+  useEffect(() => {
+    if (!isKeyRegenerated) return;
+    const timeoutId = window.setTimeout(() => setIsKeyRegenerated(false), 1200);
+    return () => window.clearTimeout(timeoutId);
+  }, [isKeyRegenerated]);
 
   return (
     <main className="mx-auto flex h-[100dvh] w-full max-w-md flex-col overflow-hidden bg-bg">
@@ -51,9 +68,13 @@ export default function Page() {
         {view === "dashboard" ? (
           <DashboardView
             proxyUrl={proxyUrl}
-            serverLabel={`${activeServer.flag} ${activeServer.city}`}
+            isKeyVisible={isKeyVisible}
+            isCopied={isCopied}
+            isKeyRegenerated={isKeyRegenerated}
+            serverLabel={`${activeServer.flag} ${activeServer.country}`}
             pingMs={activeServer.pingMs}
             profile={profile}
+            onToggleKeyVisibility={() => setIsKeyVisible((current) => !current)}
             onSetupInTelegram={handleOpenTelegramSetup}
             onCopyLink={handleCopyLink}
             onRegenerateKey={handleRegenerateKey}
@@ -75,6 +96,8 @@ export default function Page() {
             onSelectServer={(serverId) => {
               setActiveServerId(serverId);
               setProxyUrl(createProxyUrl(serverId));
+              setIsKeyVisible(false);
+              setIsKeyRegenerated(false);
               setView("settings");
             }}
           />
